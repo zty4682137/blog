@@ -186,7 +186,7 @@
                         
 
 
-<a href="/blog/tags/浏览器/">#浏览器</a> <a href="/blog/tags/基础原理/">#基础原理</a>
+<a href="/blog/tags/基础原理/">#基础原理</a> <a href="/blog/tags/浏览器/">#浏览器</a>
 
 
                     
@@ -208,9 +208,18 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <h2 id="为了方便记忆-省略了一些东西-有一些不太准确"><a href="#为了方便记忆-省略了一些东西-有一些不太准确" class="headerlink" title="为了方便记忆 省略了一些东西 有一些不太准确"></a>为了方便记忆 省略了一些东西 有一些不太准确</h2><h1 id="三棵树"><a href="#三棵树" class="headerlink" title="三棵树"></a>三棵树</h1><p>1、dom树<br>2、样式树<br>3、渲染树</p>
 <h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>在收到服务器的回复后，将字符串解析为标签（标记化算法）<br>1、解析dom树（树构建算法）<br>2、解析css，将css解析为样式树<br>3、1和2将内容搞成渲染树（在解析dom树时所有的标签都会被加入dom，所以这一步会筛选掉一些不可见节点，比如display为none的元素、head啥的）<br>4、渲染树再经过一些调整（js的调整、css权值的计算、布局计算、溢出、滚动、层级啥的）<br>5、呈现</p>
-<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>1和2是同时进行的<br>解析的顺序根据标签的顺序决定（所以一般来说style、引用都往前放，因为css解析和浏览器的下载都不会阻塞页面解析）<br>进行script解析时将会阻塞解析，等script执行完之后才会继续。（最开始考虑的原因是因为js有可能会改变dom结构所以这么设计）<br>碰到<link src="">、/<script src\="">、<img>这类外部引用的标签时会进行异步的下载动作，css下载后在2中继续解析，js下载后依旧会阻塞页面的解析，图片声音视频啥的一般会下久一点。<br>3会等待1和2完成再执行<br>3和4和5是同时进行的（所以会造成页面一边打开一边渲染的情况）<br>在1结束后会触发DOMContentLoaded事件(这个事件原生好像只能用addeventlistener监听)，也就是$(window).ready()<br>在3结束后触发window.onload，也就是$(window).load()</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/riddle1981/article/details/78681191">非常非常非常详细的大神整理</a></p>
-</script></p>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><ul>
+<li>1和2是同时进行的</li>
+<li>解析的顺序根据标签的顺序决定（所以一般来说style、引用都往前放，因为css解析和浏览器的下载都不会阻塞页面解析）</li>
+<li>进行script解析时将会阻塞解析，等script执行完之后才会继续。（最开始考虑的原因是因为js有可能会改变dom结构所以这么设计）</li>
+<li>碰到<code>&lt;link src&gt;、&lt;script src&gt;、&lt;img&gt;</code>这类外部引用的标签时会进行异步的下载动作，css下载后在2中继续解析，js下载后依旧会阻塞页面的解析，图片声音视频啥的一般会下久一点。</li>
+<li>3会等待1和2完成再执行</li>
+<li>3和4和5是同时进行的（所以会造成页面一边打开一边渲染的情况）</li>
+<li>在1结束后会触发DOMContentLoaded事件(这个事件原生好像只能用addeventlistener监听)，也就是$(window).ready()</li>
+<li>在3结束后触发window.onload，也就是$(window).load()</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/riddle1981/article/details/78681191" target="_blank" rel="noopener">非常非常非常详细的大神整理</a></p>
+
 
                 
             </div>
