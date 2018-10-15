@@ -210,10 +210,11 @@
                 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在写博客时修改了.yml中的配置，修改了.md的一些文档，在执行hexo s时报错<br>之后重新编译执行hexo g，同样报错，由此可知是在编译时报错</p>
 <h3 id="情况一："><a href="#情况一：" class="headerlink" title="情况一："></a>情况一：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Template render error: (unknown path)</span><br><span class="line">  Error: expected end of comment, got end of file</span><br></pre></td></tr></table></figure>
 <h3 id="情况二："><a href="#情况二：" class="headerlink" title="情况二："></a>情况二：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Template render error: (unknown path) [Line 3, Column 21]</span><br><span class="line">  unexpected token: &#125;&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>问题出在.md的文章中</p>
-<h3 id="情况一：-1"><a href="#情况一：-1" class="headerlink" title="情况一："></a>情况一：</h3><p>在尝试使用markdown语法的锚链接后面的url错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[需要跳转的目录]&#123;#1&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="情况二：-1"><a href="#情况二：-1" class="headerlink" title="情况二："></a>情况二：</h3><p>出现了</p>
-<p><code>双花括号</code><br><code>花括号中间包含%的写法</code><br>没错确实打不出来<br>时会出现这种报错<br><span style="color:red;">请注意情况二注释掉代码不管用，要在.md文档中删除</span></p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>问题出在.md的文章中</p>
+<h3 id="情况一：-1"><a href="#情况一：-1" class="headerlink" title="情况一："></a>情况一：</h3><p>在尝试使用markdown语法的锚链接后面的url使用错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[需要跳转的目录]&#123;#1&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="情况二：-1"><a href="#情况二：-1" class="headerlink" title="情况二："></a>情况二：</h3><p>出现了<br><code>双花括号</code><br><code>花括号中间包含%的写法</code><br>（没错这里确实不能打出来不然报错）</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>情况一中直接将代码注释或放入代码段中，或者直接修改为markdown下格式正确的链接方式<br>若要在文章中使用锚链接，建议使用html来实现<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span> <span class="attr">id</span>=<span class="string">"ID"</span>&gt;</span>文章标题<span class="tag">&lt;<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#ID"</span>&gt;</span>我是锚链接<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><span style="color:red;">请注意情况二注释掉代码不管用，要在.md文档中删除</span></p>
 
 
                 
