@@ -187,7 +187,7 @@
                         
 
 
-<a href="/blog/tags/浏览器/">#浏览器</a> <a href="/blog/tags/基础原理/">#基础原理</a>
+<a href="/blog/tags/基础原理/">#基础原理</a> <a href="/blog/tags/浏览器/">#浏览器</a>
 
 
                     
@@ -207,8 +207,8 @@
 
             <!-- Post Main Content -->
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <h2 id="为了方便记忆-省略了一些东西-有一些不太准确"><a href="#为了方便记忆-省略了一些东西-有一些不太准确" class="headerlink" title="为了方便记忆 省略了一些东西 有一些不太准确"></a>为了方便记忆 省略了一些东西 有一些不太准确</h2><h1 id="三棵树"><a href="#三棵树" class="headerlink" title="三棵树"></a>三棵树</h1><p>1、dom树<br>2、样式树<br>3、渲染树</p>
-<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>在收到服务器的回复后，将字符串解析为标签（标记化算法）<br>1、解析dom树（树构建算法）<br>2、解析css，将css解析为样式树<br>3、1和2将内容搞成渲染树（在解析dom树时所有的标签都会被加入dom，所以这一步会筛选掉一些不可见节点，比如display为none的元素、head啥的）<br>4、渲染树再经过一些调整（js的调整、css权值的计算、布局计算、溢出、滚动、层级啥的）<br>5、呈现</p>
+                <h2 id="为了方便记忆-省略一些东西-有一些不太准确"><a href="#为了方便记忆-省略一些东西-有一些不太准确" class="headerlink" title="为了方便记忆 省略一些东西 有一些不太准确"></a>为了方便记忆 省略一些东西 有一些不太准确</h2><h1 id="三棵树"><a href="#三棵树" class="headerlink" title="三棵树"></a>三棵树</h1><p>1、dom树<br>2、样式树<br>3、渲染树</p>
+<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>在收到服务器的回复后，将字符串解析为标签（标记化算法）<br>1、解析dom树（树构建算法）<br>2、解析css，将css解析为样式树<br>3、1和2将内容搞成渲染树（在解析dom树时所有的标签都会被加入dom，所以这一步会筛选掉一些不可见节点，比如display为none的元素、head等）<br>4、渲染树再经过一些调整（js的调整、css权值的计算、布局计算、溢出、滚动、层级啥的）<br>5、呈现</p>
 <h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><ul>
 <li>1和2是同时进行的</li>
 <li>解析的顺序根据标签的顺序决定（所以一般来说style、引用都往前放，因为 <strong><em>css解析</em></strong>和 <strong><em>浏览器的下载</em></strong>都是异步动作，不会阻塞页面解析）</li>
