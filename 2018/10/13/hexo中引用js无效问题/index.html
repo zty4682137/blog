@@ -133,7 +133,7 @@
                     </li>
                 
                     <li>
-                        <a href="https://www.zhangtianyang.cn/">
+                        <a href="http://www.zhangtianyang.cn/">
                             
                                 返回主页
                             
@@ -207,9 +207,9 @@
 
             <!-- Post Main Content -->
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用hexo的时候打算使用“<a href="http://busuanzi.ibruce.info/" target="_blank" rel="noopener">不蒜子</a>”做本站的网站计数<br>根据简书文档《<a href="https://www.jianshu.com/p/8a8f880f40c0" target="_blank" rel="noopener">给Hexo博客添加访问统计</a>》在footer.ejs/header.ejs/layout.ejs中引用后就可以使用了<br>我在footer引用后，结果只有在footer之后的代码起效了。header中的代码不起作用。<br>在header中再次引用后，footer中又不起作用了。</p>
-<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>在此项目中的ejs解析方式和vue的模块化管理不同，在这里是先化成html模板，之后再按顺序解析，流程与原生代码一个套路。<br>也就是说，在这里是先解析了header.ejs部分再解析footer.ejs部分。<br>header在加载的时候还没有引入footer中的js文件。在header中如果再次引用的话相当于单页面的重复引用，会导致后面代码的失效。</p>
-<p style="color:red;">总之，ejs的解析方式是非模块化的，在一部分中引用js后不能作用于全局，每个部分也都不是独立的，不能在多个部分重复引用同样的js。</p>
+                <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用hexo的时候打算使用“<a href="http://busuanzi.ibruce.info/" target="_blank" rel="noopener">不蒜子</a>”做本站的网站计数<br>根据简书文档《<a href="https://www.jianshu.com/p/8a8f880f40c0" target="_blank" rel="noopener">给Hexo博客添加访问统计</a>》在footer.ejs/header.ejs/layout.ejs中引用都可以使用<br>我在footer引用后，结果只有在footer中可以显示计数，header中不显示。<br>在header中再次引用后，footer中又不起效了。</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>在此项目中的ejs解析方式和vue的模块化管理不同，ejs模板直接将代码解析成html，之后再按顺序解析，流程与原生代码一个套路。<br>也就是说，在这里是先解析了header.ejs部分再解析footer.ejs部分。<br>header在加载的时候还没有引入footer中的js文件。在header中如果再次引用的话相当于重复引用，会导致后面代码的失效。</p>
+<p style="color:red;">总之，ejs的解析方式是非模块化的，在某一部分引用js并不能作用于全局，每个部分也都不是独立的，不能在多个部分重复引用同样的js。</p>
 
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>要将js的引用放在header中，且在其他部分不要重复引用</p>
 
