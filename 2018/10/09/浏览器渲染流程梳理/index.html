@@ -10,9 +10,8 @@
     <!--Description-->
 
     
-
     
-        <meta name="description" content="杜绝网上资料的复制粘贴，不抄书，精炼，删繁就简"/>
+        <meta name="description" content="杜绝复制粘贴，不抄书，精炼，删繁就简"/>
     
 
     <!--Author-->
@@ -27,7 +26,7 @@
 
     <!--Open Graph Description-->
     
-        <meta property="og:description" content="杜绝网上资料的复制粘贴，不抄书，精炼，删繁就简"/>
+        <meta property="og:description" content="杜绝复制粘贴，不抄书，精炼，删繁就简"/>
     
 
     <!--Open Graph Site Name-->
@@ -78,8 +77,8 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
 
     <!-- Google Analytics -->
-    
-
+    <!-- 
+ -->
 
     <!-- favicon -->
     
@@ -103,10 +102,11 @@
             </button>
             <a class="navbar-brand" href="/blog/">正经的技术博客</a>
         </div>
-
+        
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li><a class="popup-trigger" style="cursor:pointer;">搜索</a></li>
                 
                     <li>
                         <a href="/blog/">
@@ -141,6 +141,339 @@
                     </li>
                 
             </ul>
+            <script src="http://cdn.bootcss.com/instantsearch.js/1.5.1/instantsearch.js"></script>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" id="hexo.configuration">
+    var CONFIG = {
+        root: '/',
+        algolia: {
+            applicationID: 'UIFYJ6EHFK',
+            apiKey: '84dd8c4511b23b5f14b15e28428c2392',
+            indexName: 'ztyHexo',
+            hits: {
+                "per_page": 50
+            },
+            labels: {
+                "input_placeholder": "搜索...",
+                "hits_empty": "未发现与 「${query}」相关的内容",
+                "hits_stats": "${hits} 条相关条目，使用了 ${time} 毫秒"
+            }
+        }
+    };
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var algoliaSettings = CONFIG.algolia;
+        var isAlgoliaSettingsValid = algoliaSettings.applicationID &&
+            algoliaSettings.apiKey &&
+            algoliaSettings.indexName;
+
+        if (!isAlgoliaSettingsValid) {
+            window.console.error('Algolia Settings are invalid.');
+            return;
+        }
+
+        var search = instantsearch({
+            appId: algoliaSettings.applicationID,
+            apiKey: algoliaSettings.apiKey,
+            indexName: algoliaSettings.indexName,
+            searchFunction: function (helper) {
+                var searchInput = $('#algolia-search-input').find('input');
+
+                if (searchInput.val()) {
+                    helper.search();
+                }
+            }
+        });
+
+        // Registering Widgets
+        [
+            instantsearch.widgets.searchBox({
+                container: '#algolia-search-input',
+                placeholder: algoliaSettings.labels.input_placeholder
+            }),
+
+            instantsearch.widgets.hits({
+                container: '#algolia-hits',
+                hitsPerPage: algoliaSettings.hits.per_page || 10,
+                templates: {
+                    item: function (data) {
+                        // console.log(CONFIG,data);
+                        var tempArr=data.permalink.split("/");
+                        return (
+                            '<a href="' + CONFIG.root + tempArr.slice(1,tempArr.length).join("/") +
+                            '" class="algolia-hit-item-link">' +
+                            data._highlightResult.title.value +
+                            '</a>'
+                        );
+                    },
+                    empty: function (data) {
+                        return (
+                            '<div id="algolia-hits-empty">' +
+                            algoliaSettings.labels.hits_empty.replace(/\$\{query}/, data.query) +
+                            '</div>'
+                        );
+                    }
+                },
+                cssClasses: {
+                    item: 'algolia-hit-item'
+                }
+            }),
+
+            instantsearch.widgets.stats({
+                container: '#algolia-stats',
+                templates: {
+                    body: function (data) {
+                        var stats = algoliaSettings.labels.hits_stats
+                            .replace(/\$\{hits}/, data.nbHits)
+                            .replace(/\$\{time}/, data.processingTimeMS);
+                        return (
+                            stats 
+                            // stats +
+                            // '<span class="algolia-powered">' +
+                            // '  <img src="' + CONFIG.root +
+                            // 'images/algolia_logo.svg" alt="Algolia" />' +
+                            // '</span>' +
+                            // '<hr />'
+                        );
+                    }
+                }
+            }),
+            //暂时去掉分页
+            // instantsearch.widgets.pagination({
+            //     container: '#algolia-pagination',
+            //     scrollTo: false,
+            //     showFirstLast: false,
+            //     labels: {
+            //         first: '<i class="fa fa-angle-double-left"></i>',
+            //         last: '<i class="fa fa-angle-double-right"></i>',
+            //         previous: '<i class="fa fa-angle-left"></i>',
+            //         next: '<i class="fa fa-angle-right"></i>'
+            //     },
+            //     cssClasses: {
+            //         root: 'pagination',
+            //         item: 'pagination-item',
+            //         link: 'page-number',
+            //         active: 'current',
+            //         disabled: 'disabled-item'
+            //     }
+            // })
+        ].forEach(search.addWidget, search);
+
+        search.start();
+
+        $('.popup-trigger').on('click', function (e) {
+            togglePop(e);
+        });
+
+        $('.popup-btn-close').click(function (e) {
+            togglePop(e);
+        });
+
+        $('body').on('click','.popoverlay',function(e){
+            togglePop(e);
+        })
+    });
+    var ifPopOpen=false;
+    function togglePop(e){
+        if(ifPopOpen){
+            $('.popup').hide();
+            $('.popoverlay').remove();
+            ifPopOpen=false;
+        }
+        else{
+            e.stopPropagation();
+            $('body').append('<div class="popoverlay">');
+            $('.popup').show();
+            $('#algolia-search-input').find('input').focus();
+            ifPopOpen=true;
+        }
+    }
+    
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#local-search-input').size() === 0) {
+            return;
+        }
+
+        // Popup Window;
+        var isfetched = false;
+        // Search DB path;
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+        var path = "/" + search_path;
+        // monitor main search box;
+
+        function proceedsearch() {
+            $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+            $('.popup').toggle();
+
+        }
+        // search function;
+        var searchFunc = function (path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                async: true,
+                success: function (xmlResponse) {
+                    // get the contents from search data
+                    isfetched = true;
+                    $('.popup').detach().appendTo('.header-inner');
+                    var datas = $("entry", xmlResponse).map(function () {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function () {
+                        var matchcounts = 0;
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length > 1) {
+                            // perform local searching
+                            datas.forEach(function (data) {
+                                var isMatch = true;
+                                var content_index = [];
+                                var data_title = data.title.trim().toLowerCase();
+                                var data_content = data.content.trim().replace(
+                                    /<[^>]+>/g, "").toLowerCase();
+                                var data_url = data.url;
+                                var index_title = -1;
+                                var index_content = -1;
+                                var first_occur = -1;
+                                // only match artiles with not empty titles and contents
+                                if (data_title != '' && data_content != '') {
+                                    keywords.forEach(function (keyword, i) {
+                                        index_title = data_title.indexOf(
+                                            keyword);
+                                        index_content = data_content.indexOf(
+                                            keyword);
+                                        if (index_title < 0 &&
+                                            index_content < 0) {
+                                            isMatch = false;
+                                        } else {
+                                            if (index_content < 0) {
+                                                index_content = 0;
+                                            }
+                                            if (i == 0) {
+                                                first_occur =
+                                                    index_content;
+                                            }
+                                        }
+                                    });
+                                }
+                                // show search results
+                                if (isMatch) {
+                                    matchcounts += 1;
+                                    str += "<li><a href='" + data_url +
+                                        "' class='search-result-title'>" +
+                                        data_title + "</a>";
+                                    var content = data.content.trim().replace(
+                                        /<[^>]+>/g, "");
+                                    if (first_occur >= 0) {
+                                        // cut out 100 characters
+                                        var start = first_occur - 20;
+                                        var end = first_occur + 80;
+                                        if (start < 0) {
+                                            start = 0;
+                                        }
+                                        if (start == 0) {
+                                            end = 50;
+                                        }
+                                        if (end > content.length) {
+                                            end = content.length;
+                                        }
+                                        var match_content = content.substring(
+                                            start, end);
+                                        // highlight all keywords
+                                        keywords.forEach(function (keyword) {
+                                            var regS = new RegExp(
+                                                keyword, "gi");
+                                            match_content =
+                                                match_content.replace(
+                                                    regS,
+                                                    "<b class=\"search-keyword\">" +
+                                                    keyword + "</b>");
+                                        });
+
+                                        str += "<p class=\"search-result\">" +
+                                            match_content + "...</p>"
+                                    }
+                                    str += "</li>";
+                                }
+                            })
+                        };
+                        str += "</ul>";
+                        if (matchcounts == 0) {
+                            str =
+                                '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+                        }
+                        if (keywords == "") {
+                            str =
+                                '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+                        }
+                        $resultContent.innerHTML = str;
+                    });
+                    proceedsearch();
+                }
+            });
+        }
+
+        // handle and trigger popup window;
+        $('.popup-trigger').mousedown(function (e) {
+            e.stopPropagation();
+            if (isfetched == false) {
+                searchFunc(path, 'local-search-input', 'local-search-result');
+            } else {
+                proceedsearch();
+            };
+
+        });
+
+        $('.popup-btn-close').click(function (e) {
+            $('.popup').hide();
+            $(".popoverlay").remove();
+            $('body').css('overflow', '');
+        });
+        $('.popup').click(function (e) {
+            e.stopPropagation();
+        });
+    });
+</script>
+
+
+<div class="site-search">
+    <div class="algolia-popup popup">
+        <div class="algolia-search">
+            <div class="algolia-search-input-icon">
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="algolia-search-input" id="algolia-search-input"></div>
+        </div>
+
+        <div class="algolia-results">
+            <div id="algolia-stats"></div>
+            <div id="algolia-hits"></div>
+            <!-- <div id="algolia-pagination" class="algolia-pagination"></div> -->
+        </div>
+
+        <span class="popup-btn-close">
+            <i class="fa fa-times-circle"></i>
+        </span>
+    </div>
+</div>
+
+            <!-- 
+  -->
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -208,7 +541,7 @@
             <!-- Post Main Content -->
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <h2 id="为了方便记忆-省略一些东西-有一些不太准确"><a href="#为了方便记忆-省略一些东西-有一些不太准确" class="headerlink" title="为了方便记忆 省略一些东西 有一些不太准确"></a>为了方便记忆 省略一些东西 有一些不太准确</h2><h1 id="三棵树"><a href="#三棵树" class="headerlink" title="三棵树"></a>三棵树</h1><p>1、dom树<br>2、样式树<br>3、渲染树</p>
-<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>在收到服务器的回复后，将字符串解析为标签（标记化算法）<br>1、解析dom树（树构建算法）<br>2、解析css，将css解析为样式树<br>3、1和2将内容搞成渲染树（在解析dom树时所有的标签都会被加入dom，所以这一步会筛选掉一些不可见节点，比如display为none的元素、head等）<br>4、渲染树再经过一些调整（js的调整、css权值的计算、布局计算、溢出、滚动、层级啥的）<br>5、呈现</p>
+<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>在收到服务器的回复后，将字符串解析为标签（标记化算法）<br>1、解析dom树（树构建算法）<br>2、解析css，将css解析为样式树<br>3、1和2将内容搞成渲染树（在解析dom树时所有的标签都会被加入dom，所以这一步会筛选掉一些不可见节点，比如display为none的元素、head等）<br>4、渲染树再经过一些调整（js的调整、css权值的计算、布局计算、溢出、滚动、层级等）<br>5、呈现</p>
 <h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><ul>
 <li>1和2是同时进行的</li>
 <li>解析的顺序根据标签的顺序决定（所以一般来说style、引用都往前放，因为 <strong><em>css解析</em></strong>和 <strong><em>浏览器的下载</em></strong>都是异步动作，不会阻塞页面解析）</li>
@@ -218,9 +551,9 @@
 <li>3和4和5是同时进行的（所以会造成页面一边打开一边渲染的情况）</li>
 <li>在1结束后会触发DOMContentLoaded事件(这个事件原生好像只能用addeventlistener监听)，也就是$(window).ready()</li>
 <li>在3结束后触发window.onload，也就是$(window).load()</li>
-<li>chrome浏览器（目前我已知的）<strong><em>并列下载的位置为6个</em></strong>，即 <strong><em>未返回的请求、未加载完成的图片和资源等</em></strong>（即状态为pending的http请求）数量到达6个时，从第7个开始的请求会被加入队列并等待。（在轮询和外部资源很多时需要注意）</li>
+<li>chrome浏览器（目前我已知的）<strong><em>并发通讯信道位置为6个(max-connections-per-server)</em></strong>，即 <strong><em>未返回的请求、未加载完成的图片和资源等</em></strong>（即状态为pending的http请求）数量到达6个时，从第7个开始的请求会被加入队列并等待。（在轮询和外部资源很多时需要注意）</li>
 </ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/riddle1981/article/details/78681191" target="_blank" rel="noopener">非常非常非常详细的大神整理</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/riddle1981/article/details/78681191" target="_blank" rel="noopener">非常详细的大神整理</a></p>
 
 
                 
