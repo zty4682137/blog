@@ -21,7 +21,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="正经的技术博客"/>
+        <meta property="og:title" content="node中的process又是个啥"/>
     
 
     <!--Open Graph Description-->
@@ -34,7 +34,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website"/>
+        <meta property="og:type" content="article"/>
     
 
     <!--Page Cover-->
@@ -53,7 +53,7 @@
 
     <!-- Title -->
     
-    <title>指南 - 正经的技术博客</title>
+    <title>node中的process又是个啥 - 正经的技术博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -481,49 +481,86 @@
 </nav>
 
     <!-- Main Content -->
-    
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
 
-<!-- Page Header -->
-<!-- Set your background image for this header in the theme's configuration: index_cover -->
-<header class="intro-header" style="background-image: url('/blog/assets/home-bg.jpg')">
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<header class="intro-header" style="background-image: url('/blog/assets/contact-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>#指南</h1>
+                <div class="post-heading">
+                    <h1>node中的process又是个啥</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-03-20
+                        
+                    </span>
+                    <span id="busuanzi_container_page_uv" style="font-size:16px;">
+                    本文阅读量<span id="busuanzi_value_page_pv"></span>次
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/blog/tags/开荒/">#开荒</a> <a href="/blog/tags/node/">#node</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/blog/categories/前端/">前端</a>
+
+                    
+                </div>
             
-                <div class="post-preview">
-    <a href="/blog/2018/10/08/常用hexo指令及markdown语法/">
-        <h1 class="post-title archive">
-            常用hexo指令及markdown语法
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2018-10-08
-    </p>
-</div>
+
+            <!-- Gallery -->
             
-            <div class="archive-before-pagination"></div>
-            <ul class="pager">
-    
-    
-</ul>
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用hexo的时候打算使用“<a href="http://busuanzi.ibruce.info/" target="_blank" rel="noopener">不蒜子</a>”做本站的网站计数<br>根据简书文档《<a href="https://www.jianshu.com/p/8a8f880f40c0" target="_blank" rel="noopener">给Hexo博客添加访问统计</a>》在footer.ejs/header.ejs/layout.ejs中引用都可以使用<br>我在footer引用后，结果只有在footer中可以显示计数，header中不显示。<br>在header中再次引用后，footer中又不起效了。</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>在此项目中的ejs解析方式和vue的模块化管理不同，ejs模板直接将代码解析成html，之后再按顺序解析，流程与原生代码一个套路。<br>也就是说，在这里是先解析了header.ejs部分再解析footer.ejs部分。<br>header在加载的时候还没有引入footer中的js文件。在header中如果再次引用的话相当于重复引用，会导致后面代码的失效。</p>
+<p style="color:red;">总之，ejs的解析方式是非模块化的，在某一部分引用js并不能作用于全局，每个部分也都不是独立的，不能在多个部分重复引用同样的js。</p>
+
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>要将js的引用放在header中，且在其他部分不要重复引用</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
         </div>
     </div>
-</div>
-
+</article>
 
     <!-- Footer -->
     <hr />

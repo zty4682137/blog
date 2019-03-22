@@ -21,7 +21,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="正经的技术博客"/>
+        <meta property="og:title" content="配置文件中的__dirname是个啥"/>
     
 
     <!--Open Graph Description-->
@@ -34,7 +34,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website"/>
+        <meta property="og:type" content="article"/>
     
 
     <!--Page Cover-->
@@ -53,7 +53,7 @@
 
     <!-- Title -->
     
-    <title>前端 - 正经的技术博客</title>
+    <title>配置文件中的__dirname是个啥 - 正经的技术博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -481,127 +481,90 @@
 </nav>
 
     <!-- Main Content -->
-    
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
 
-<!-- Page Header -->
-<!-- Set your background image for this header in the theme's configuration: index_cover -->
-<header class="intro-header" style="background-image: url('/blog/assets/home-bg.jpg')">
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<header class="intro-header" style="background-image: url('/blog/assets/contact-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>前端</h1>
+                <div class="post-heading">
+                    <h1>配置文件中的__dirname是个啥</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-03-22
+                        
+                    </span>
+                    <span id="busuanzi_container_page_uv" style="font-size:16px;">
+                    本文阅读量<span id="busuanzi_value_page_pv"></span>次
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/blog/tags/node/">#node</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/blog/categories/前端/">前端</a>
+
+                    
+                </div>
             
-                <div class="post-preview">
-    <a href="/blog/2019/03/22/配置文件中的__dirname&dir是个啥/">
-        <h1 class="post-title archive">
-            配置文件中的__dirname是个啥
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2019-03-22
-    </p>
-</div>
+
+            <!-- Gallery -->
             
-                <div class="post-preview">
-    <a href="/blog/2019/03/20/node中的process又是个啥/">
-        <h1 class="post-title archive">
-            node中的process又是个啥
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2019-03-20
-    </p>
-</div>
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>今天给一个新的项目配置路径标识@的时候，好好看了下webpack中的配置准备提高一下自己（误），看到地址配置中有一特殊标识<code>__dirname</code><br>好好看了一下 这货没有被import或require就能直接用 这么神奇的东西怎么能不摆渡呢</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>对不起咱学识浅薄 node相关的东西我表示没有好好看 平时只写前端 所以操作文件和路径的代码就比较少 原来这个<code>__dirname</code>/<code>__filename</code>在node中的写法很常见。<br><code>__dirname 代表当前所在文件路径</code><br><code>__filename 代表当前所在文件名称</code><br>好的 既然你代表当前路径 我干嘛不用<code>./</code>呢<br>继续摆渡<br><code>__dirname 就是代表当前文件的路径 不变</code><br>但是！西噶西！<br><code>./ 在执行时 指向当前执行的路径！！！！</code></p>
+<p>例如<br>假设有如下目录结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/dir1</span><br><span class="line">  /dir2</span><br><span class="line">    test.js</span><br></pre></td></tr></table></figure></p>
+<p>然后在 test.js 中，有如下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var path = require(&quot;path&quot;);</span><br><span class="line">console.log(&quot;. = %s&quot;, path.resolve(&quot;.&quot;));</span><br><span class="line">console.log(&quot;__dirname = %s&quot;, path.resolve(__dirname));</span><br></pre></td></tr></table></figure></p>
+<p>当前目录在/dir1/dir2下时执行 <code>node test.js</code>将会得到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. = /dir1/dir2</span><br><span class="line">__dirname = /dir1/dir2</span><br></pre></td></tr></table></figure></p>
+<p>当前目录在/dir1下时执行 <code>dir2/node test.js</code>将会得到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. = /dir1</span><br><span class="line">__dirname = /dir1/dir2</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://www.runoob.com/nodejs/nodejs-path-module.html" target="_blank" rel="noopener">当然相关的path模块的说明连接不能忘掉</a></p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>羊驼没有淹死成功过河！</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/u014473112/article/details/51967364" target="_blank" rel="noopener">https://blog.csdn.net/u014473112/article/details/51967364</a><br><a href="https://blog.csdn.net/zsensei/article/details/79094714" target="_blank" rel="noopener">https://blog.csdn.net/zsensei/article/details/79094714</a></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
             
-                <div class="post-preview">
-    <a href="/blog/2019/03/20/http post请求报文怎么变成options了！/">
-        <h1 class="post-title archive">
-            http请求报文中的options类型是啥
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2019-03-20
-    </p>
-</div>
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
             
-                <div class="post-preview">
-    <a href="/blog/2018/10/13/hexo中引用js无效问题/">
-        <h1 class="post-title archive">
-            hexo中引用js无效问题
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2018-10-13
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/blog/2018/10/10/执行hexo-generate时的unknown-path问题/">
-        <h1 class="post-title archive">
-            执行hexo generate时的unknown path问题
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2018-10-10
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/blog/2018/10/09/浏览器渲染流程梳理/">
-        <h1 class="post-title archive">
-            浏览器渲染流程梳理
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2018-10-09
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/blog/2018/10/08/常用hexo指令及markdown语法/">
-        <h1 class="post-title archive">
-            常用hexo指令及markdown语法
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2018-10-08
-    </p>
-</div>
-            
-            <div class="archive-before-pagination"></div>
-            <ul class="pager">
-    
-    
-</ul>
         </div>
     </div>
-</div>
-
+</article>
 
     <!-- Footer -->
     <hr />
