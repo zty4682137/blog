@@ -21,7 +21,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="正经的技术博客"/>
+        <meta property="og:title" content="node中的process又是个啥"/>
     
 
     <!--Open Graph Description-->
@@ -34,7 +34,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website"/>
+        <meta property="og:type" content="article"/>
     
 
     <!--Page Cover-->
@@ -53,7 +53,7 @@
 
     <!-- Title -->
     
-    <title>开荒 - 正经的技术博客</title>
+    <title>node中的process又是个啥 - 正经的技术博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -481,49 +481,86 @@
 </nav>
 
     <!-- Main Content -->
-    
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
 
-<!-- Page Header -->
-<!-- Set your background image for this header in the theme's configuration: index_cover -->
-<header class="intro-header" style="background-image: url('/blog/assets/home-bg.jpg')">
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<header class="intro-header" style="background-image: url('/blog/assets/contact-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>#开荒</h1>
+                <div class="post-heading">
+                    <h1>node中的process又是个啥</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-03-25
+                        
+                    </span>
+                    <span id="busuanzi_container_page_uv" style="font-size:16px;">
+                    本文阅读量<span id="busuanzi_value_page_pv"></span>次
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/blog/tags/基础/">#基础</a> <a href="/blog/tags/node/">#node</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/blog/categories/前端/">前端</a>
+
+                    
+                </div>
             
-                <div class="post-preview">
-    <a href="/blog/2019/03/20/node中的process又是个啥/">
-        <h1 class="post-title archive">
-            node中的process又是个啥
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2019-03-20
-    </p>
-</div>
+
+            <!-- Gallery -->
             
-            <div class="archive-before-pagination"></div>
-            <ul class="pager">
-    
-    
-</ul>
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在看webpack配置时，看到了控制环境变量的一个东西出现了无数遍，就是他↓<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">process.env.NODE_ENV</span><br></pre></td></tr></table></figure></p>
+<p>所有的环境的判断都是以这个字段作为标志位进行的，那么我推测，<code>process</code>这个玩意和全局肯定有关。<br>再次向上查找，好的，这个<code>process</code>不是被import进来的 又是个公<s>公</s>共的 直接去找相关文档<br><a href="http://nodejs.cn/api/process.html" target="_blank" rel="noopener">我就是官方文档！</a><br>经过我的一通分析，以下是我的理解</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>在我的理解中↓<br><code>node</code>更倾向于运行环境 提供底层的一些服务（例如web容器、域名服务器、终端、虚拟机等）和各种依赖<br><code>process</code>更倾向于运行时 存放当前正在运行的node的信息并提供一些事件和操作进程的api<br>官方解释↓<br>process 对象是一个全局变量，它提供有关当前 Node.js 进程的信息并对其进行控制。 作为一个全局变量，它始终可供 Node.js 应用程序使用，无需使用 require()。</p>
+<p><code>process</code>中的变量可以在node运行中随时更改 类似于修改<code>process.env.NODE_ENV</code>去更改node的当前环境 从而修改在不同环境下程序的不同表现。<br>当然，在node运行时中，<code>process.env</code>就不能再修改（毕竟我已经正在运行了），当然，这牵扯到一些Worker的线程问题，这些以后再更新<br>（暂且留坑）</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>工作太多没时间详细整理 随便写一下 详细学习还是看<a href="http://nodejs.cn/api/process.html" target="_blank" rel="noopener">官方文档</a>吧</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
         </div>
     </div>
-</div>
-
+</article>
 
     <!-- Footer -->
     <hr />
